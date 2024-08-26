@@ -74,31 +74,6 @@ function loadEvents(dir) {
 
 loadEvents('./src/events');
 
-client.on('interactionCreate', async interaction => {
-    if (!interaction.isModalSubmit()) return;
-
-    if (interaction.customId === 'embedBuilderModal') {
-        try {
-            const title = interaction.fields.getTextInputValue('embedTitle');
-            const description = interaction.fields.getTextInputValue('embedDescription');
-            const color = interaction.fields.getTextInputValue('embedColor') || '#5865F2';
-            const footer = interaction.fields.getTextInputValue('embedFooter');
-            const timestamp = interaction.fields.getTextInputValue('embedTimestamp').toLowerCase() === 'oui';
-            const embed = new Discord.EmbedBuilder()
-                .setDescription(description)
-                .setColor(color);
-
-            if (title) embed.setTitle(title);
-            if (footer) embed.setFooter({ text: footer });
-            if (timestamp) embed.setTimestamp();
-            await interaction.channel.send({ embeds: [embed] });
-        } catch (error) {
-            console.error('Error handling modal submission:', error);
-            await interaction.reply({ content: 'Une erreur s\'est produite lors du traitement de votre soumission.', ephemeral: true }).catch(console.error);
-        }
-    }
-});
-
 client.on('ready', () => {
     const rest = new REST({ version: '10' }).setToken(client.token);
 
